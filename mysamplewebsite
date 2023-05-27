@@ -1,0 +1,26 @@
+pipeline {
+    agent {label "slave2"}
+    stages {
+        stage ("clone") {
+            steps {
+                sh "pwd"
+                sh "ls"
+                sh "cd my-sample-website ; git pull https://github.com/samsambrama/my-sample-website.git"
+                sh "pwd"
+                
+            }
+        }
+    stage ("build") {
+        steps {
+            sh "pwd"
+            sh "cd my-sample-website ; mvn clean install"
+        }
+    } 
+
+    stage ("deploy") {
+    steps {
+        sh "cp my-sample-website/webapp/target/webapp.war /home/ec2-user/apache-tomcat-8.0.15/webapps"
+    }
+    }
+    }
+} 
